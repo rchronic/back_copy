@@ -59,7 +59,7 @@ class IngredientsListController extends Controller
             $item = array(
                 "id"              => $row->rawMaterialCode,
                 "nama_material"   => $row->rawMaterialName,
-                "total_stok"     => $row->totalStock,
+                "total_stok"      => $row->totalStock,
                 "satuan"          => $row->satuan,
             );
             array_push($data,$item);
@@ -67,7 +67,32 @@ class IngredientsListController extends Controller
         return $data;
     }
 
-    // public function remove () {
-    //     return DB::unprepared(DB::raw("CALL RAW_MATERIAL_REMOVE($this->property_id,'$this->$ingredient_code')"));
-    // }
+    public function create()
+    {
+        DB::unprepared(DB::raw("CALL RAW_MATERIAL_INSERT('$this->material_code','$this->material_name',$this->total_stock,'$this->satuan','$this->propertyID')"));
+    }
+
+    public function update()
+    {
+        DB::unprepared(DB::raw("CALL RAW_MATERIAL_UPDATE('$this->material_code','$this->material_name',$this->total_stock,'$this->satuan')"));
+    }
+
+    public function delete() {
+        DB::unprepared(DB::raw("CALL RAW_MATERIAL_DELETE('$this->material_code')"));
+    }
+
+    public function setProperty($propertyCode){
+        $property = new Property ($propertyCode);
+        if($property){
+            $this->propertyID = $property->id;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function getProperty (){
+        return $this->propertyID;
+    }
 }

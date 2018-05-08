@@ -33,7 +33,7 @@ class IngredientsController extends Controller
     public function getIngredientDetail(Request $request)
     {
         $params = Tools::params($request, array(
-            ['ingredient_id', 'string']
+            ['ingredient_id', 'string'],
         ));
 
         $item = new Ingredients($params->ingredient_id);
@@ -49,19 +49,56 @@ class IngredientsController extends Controller
             return Response::send('Wrong Ingredient ID');
         }
     }
+    
+    public function createIngredient(Request $request)
+    {
+        $params = Tools::params($request, array(
+            ['nama_material', 'string'],
+            ['total_stok', 'string'],
+            ['satuan', 'string'],
+        ));
 
-    // public function removeIngredient (Request $request){
-    //     $params = Tools::params($request,array(
-    //         ['ingredient_code','string']
-    //     ));
-    //
-    //     $ingredient = new Ingredient($params->ingredient_code);
-    //     if($ingredient->exist){
-    //         $ingredient->remove();
-    //         return Response::send('Ingredient Type Removed', 'request');
-    //     }
-    //     else{
-    //         return Response::send('Wrong Ingredient Code');
-    //     }
-    // }
+        $item = new Ingredients();
+        $item->setProperty($params->h_property_id);
+        $item->material_code    = (new Tools)->generateCode('raw_material','rawMaterialCode');
+        $item->material_name    = $params->nama_material;
+        $item->total_stock      = $params->total_stok;
+        $item->satuan           = $params->satuan;
+        $item->create();
+        return Response::send('Ingredient Created', 'content');
+    }
+
+    public function updateIngredient(Request $request)
+    {
+        $params = Tools::params($request, array(
+            ['ingredient_id', 'string'],
+            ['nama_material', 'string'],
+            ['total_stok', 'string'],
+            ['satuan', 'string'],
+        ));
+
+        $item = new Ingredients($params->ingredient_id);
+        $item->material_code    = $params->ingredient_id;
+        $item->material_name    = $params->nama_material;
+        $item->total_stock      = $params->total_stok;
+        $item->satuan           = $params->satuan;
+        $item->update();
+        return Response::send('Ingredient Update', 'content');
+    }
+
+    public function deleteIngredient(Request $request)
+    {
+        $params = Tools::params($request,array(
+            ['ingredient_id','string'],
+        ));
+    
+        $item = new Ingredients($params->ingredient_id);
+        if($item->exist){
+            $item->delete();
+            return Response::send('Ingredient Deleted', 'request');
+        }
+        else{
+            return Response::send('Wrong Ingredient ID');
+        }
+    }
 }

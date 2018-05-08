@@ -37,11 +37,15 @@ Route::middleware(['auth.header','auth.access'])->group(function () {
     // Admin - Request
     Route::post("$_VERSION/$_SRVC_PLATFORM/user/get", 'Platform\User@getUserData');
 
-    // Fnb In Here
+    // Fnb Dashboard
     Route::post("$_VERSION/$_SRVC_FNB/dashboard/menu", 'Fnb\Dashboard\FnbContentController@FnbMenuContent');
+
+    // Fnb Ingredient
     Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/list", 'Fnb\IngredientsController@getListIngredients');
     Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/detail", 'Fnb\IngredientsController@getIngredientDetail');
-    Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/detail", 'Fnb\IngredientsController@getIngredientDetail');
+    Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/create", 'Fnb\IngredientsController@createIngredient');
+    Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/update", 'Fnb\IngredientsController@updateIngredient');
+    Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/delete", 'Fnb\IngredientsController@deleteIngredient');
     
 
     // Route::post("$_VERSION/$_SRVC_FNB/$_CASH_OPNAME/list", 'Fnb\CashOpnameController@getListIngredients');

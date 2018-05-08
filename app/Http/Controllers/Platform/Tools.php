@@ -201,4 +201,18 @@ class Tools extends Controller {
   
         return $parameters;
     }
+
+    public function generateCode ($type,$column=false){
+      $code = $this->generateString(5);
+      if($type){
+          $table  = strtoupper($type);
+          if(!$column){$column = strtolower($type).'Code';}
+          $exist  = DB::table($table)
+              ->where($column,$code)
+              ->first();
+
+          if($exist){generateCode($type);}
+      }
+      return $code;
+    }
 }
