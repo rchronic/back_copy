@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Platform;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Platform\Services as Services;
 
 class Access extends Controller
 {
@@ -97,5 +98,50 @@ class Access extends Controller
             $roles = array();
         }
         return $roles;
+    }
+
+    public static function getMenu($service_id, $user_id=false){
+        $service = new Services($service_id);
+        if($service->exist){
+          $data = DB::table('SIDE_MENU')
+              ->where('id_service',$service->id)
+              ->orderBy('id_parent', 'asc')
+              ->orderBy('position', 'asc')
+              ->get();
+          if($data){
+            $targets = [];
+            $menu    = [];
+            foreach ($data as $row) {
+                $target[$row->id_menu] = $row->label;
+
+                $item = array(
+                    "label"   => $row->label,
+                    "uri"     => $row->uri,
+                    "icon"    => $row->icon?$row->icon:false,
+                    "enabled" => ($row->status == 'enabled')?true:false,
+                    "submenu" => []
+                );
+                if($row->status != 'hidden'){
+                    if($row->id_parent){
+                        foreach($menu as $key => $lvl1){
+                        if($lvl1['label'] == $target[$row->id_parent]){
+                            $menu[$key]['submenu'][] = $item;
+                        }
+                        }
+                    }
+                    else{
+                        $menu[] = $item;
+                    }
+                }
+            }
+            return $menu;
+          }
+          else{
+            return false;
+          }
+        }
+        else{
+          return false;
+        }
     }
 }
