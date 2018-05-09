@@ -47,9 +47,9 @@ Route::middleware(['auth.header','auth.access'])->group(function () {
     Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/update", 'Fnb\IngredientsController@updateIngredient');
     Route::post("$_VERSION/$_SRVC_FNB/$_INGREDIENTS/delete", 'Fnb\IngredientsController@deleteIngredient');
     
-
-    // Route::post("$_VERSION/$_SRVC_FNB/$_CASH_OPNAME/list", 'Fnb\CashOpnameController@getListIngredients');
-    // Route::post("$_VERSION/$_SRVC_FNB/$_CASHIER_ANNOTATION/list", 'Fnb\CashierAnnotationController@getListIngredients');
+    // Fnb Cash Opname
+    Route::post("$_VERSION/$_SRVC_FNB/$_CASH_OPNAME/list", 'Fnb\CashOpnameController@getListCashOpname');
+    Route::post("$_VERSION/$_SRVC_FNB/$_CASH_OPNAME/$_CASHIER_ANNOTATION/list", 'Fnb\CashierAnnotationController@getListCashierAnnotation');
 
 });
 
