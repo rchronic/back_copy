@@ -23,82 +23,60 @@ class CashOpnameController extends Controller
 
         if(1) {
             $data = (new CashOpname)->getList($params->h_property_id);
-            return Response::send('CashOpname List', 'content', $data);
+            return Response::send('Cash Opname List', 'content', $data);
         }
         else {
             return Response::send('Wrong Parameters');
         }
     }
 
-    // public function getIngredientDetail(Request $request)
-    // {
-    //     $params = Tools::params($request, array(
-    //         ['ingredient_id', 'string'],
-    //     ));
+    public function getCashOpnameDescription(Request $request)
+    {
+        $params = Tools::params($request, array(
+            ['cash_opname_id', 'string'],
+        ));
 
-    //     $item = new Ingredients($params->ingredient_id);
-    //     if($item->exist) {
-    //         $data = array(
-    //             "id"              => $item->material_code,
-    //             "nama_material"   => $item->material_name,
-    //             "total_stok"      => $item->total_stock,
-    //             "satuan"          => $item->satuan,
-    //         );
-    //         return Response::send('Ingredient Detail', 'content', $data);
-    //     } else {
-    //         return Response::send('Wrong Ingredient ID');
-    //     }
-    // }
+        $item = new CashOpname($params->cash_opname_id);
+        if($item->exist) {
+            $data = array(
+                "tanggal"      => $item->date,
+                "deskripsi"    => $item->description,
+            );
+            return Response::send('Cash Opname Description', 'content', $data);
+        } else {
+            return Response::send('Wrong Ingredient ID');
+        }
+    }
     
-    // public function createIngredient(Request $request)
-    // {
-    //     $params = Tools::params($request, array(
-    //         ['nama_material', 'string'],
-    //         ['total_stok', 'string'],
-    //         ['satuan', 'string'],
-    //     ));
+    public function getStatusDetail(Request $request)
+    {
+        $params = Tools::params($request, array(
+            ['cash_opname_id', 'string'],
+        ));
 
-    //     $item = new Ingredients();
-    //     $item->setProperty($params->h_property_id);
-    //     $item->material_code    = (new Tools)->generateCode('raw_material','rawMaterialCode');
-    //     $item->material_name    = $params->nama_material;
-    //     $item->total_stock      = $params->total_stok;
-    //     $item->satuan           = $params->satuan;
-    //     $item->create();
-    //     return Response::send('Ingredient Created', 'content');
-    // }
+        $item = new CashOpname($params->cash_opname_id);
+        if($item->exist) {
+            $data = array(
+                "id"         => $item->cash_opname_code,
+                "status"     => $item->status,
+            );
+            return Response::send('Status Detail', 'content', $data);
+        } else {
+            return Response::send('Wrong Cashier Annotation ID');
+        }
+    }
 
-    // public function updateIngredient(Request $request)
-    // {
-    //     $params = Tools::params($request, array(
-    //         ['ingredient_id', 'string'],
-    //         ['nama_material', 'string'],
-    //         ['total_stok', 'string'],
-    //         ['satuan', 'string'],
-    //     ));
+    public function updateStatus(Request $request)
+    {
+        $params = Tools::params($request, array(
+            ['cash_opname_id', 'string'],
+            ['status', 'string'],
+        ));
 
-    //     $item = new Ingredients($params->ingredient_id);
-    //     $item->material_code    = $params->ingredient_id;
-    //     $item->material_name    = $params->nama_material;
-    //     $item->total_stock      = $params->total_stok;
-    //     $item->satuan           = $params->satuan;
-    //     $item->update();
-    //     return Response::send('Ingredient Update', 'content');
-    // }
-
-    // public function deleteIngredient(Request $request)
-    // {
-    //     $params = Tools::params($request,array(
-    //         ['ingredient_id','string'],
-    //     ));
-    
-    //     $item = new Ingredients($params->ingredient_id);
-    //     if($item->exist){
-    //         $item->delete();
-    //         return Response::send('Ingredient Deleted', 'request');
-    //     }
-    //     else{
-    //         return Response::send('Wrong Ingredient ID');
-    //     }
-    // }
+        $item = new CashOpname($params->cash_opname_id);
+        $item->cash_opname_code    = $params->cash_opname_id;
+        $item->status              = $params->status;
+        $item->update_status();
+        return Response::send('Status Update', 'content');
+    }
 }
